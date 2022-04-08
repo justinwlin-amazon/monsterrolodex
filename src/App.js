@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import React, { Component } from "react";
 
@@ -7,6 +6,7 @@ class App extends Component {
 		super(props);
 		this.state = {
 			monsters: [],
+			filteredText: "",
 		};
 	}
 
@@ -17,14 +17,38 @@ class App extends Component {
 	}
 
 	monsterList() {
-		return this.state.monsters.map((monster) => (
-			<div key={monster.id}>
-				<h1>{monster.name}</h1>
-			</div>
-		));
+		return this.state.monsters.map((monster) => {
+			if (
+				monster.name
+					.toLowerCase()
+					.includes(this.state.filteredText.toLowerCase())
+			) {
+				return (
+					<div key={monster.id}>
+						<h1>{monster.name}</h1>
+					</div>
+				);
+			}
+		});
 	}
+
+	handleChange = (event) => {
+		this.setState({ filteredText: event.target.value });
+	};
+
 	render() {
-		return <div className="App">{this.monsterList()}</div>;
+		const { handleChange } = this;
+		return (
+			<div className="App">
+				<input
+					className="search-box"
+					type="search"
+					placeholder="Search monsters"
+					onChange={handleChange}
+				/>
+				{this.monsterList()}
+			</div>
+		);
 	}
 }
 export default App;
