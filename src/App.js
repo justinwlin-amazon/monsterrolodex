@@ -1,6 +1,7 @@
 import "./App.css";
 import React, { Component } from "react";
-
+import CardList from "./components/card-list/card-list.component";
+import SearchBox from "./components/search-box/search-box.component";
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -16,37 +17,25 @@ class App extends Component {
 			.then((json) => this.setState({ monsters: json }));
 	}
 
-	monsterList() {
-		return this.state.monsters.map((monster) => {
-			if (
-				monster.name
-					.toLowerCase()
-					.includes(this.state.filteredText.toLowerCase())
-			) {
-				return (
-					<div key={monster.id}>
-						<h1>{monster.name}</h1>
-					</div>
-				);
-			}
-		});
-	}
-
 	handleChange = (event) => {
 		this.setState({ filteredText: event.target.value });
 	};
 
 	render() {
 		const { handleChange } = this;
+
+		const filteredMonster = this.state.monsters.filter((monster) =>
+			monster.name.toLowerCase().includes(this.state.filteredText.toLowerCase())
+		);
+
 		return (
 			<div className="App">
-				<input
+				<SearchBox
 					className="search-box"
-					type="search"
-					placeholder="Search monsters"
-					onChange={handleChange}
+					onChangeHandler={handleChange}
+					placeholder="Search for monsters"
 				/>
-				{this.monsterList()}
+				<CardList monsters={filteredMonster} />
 			</div>
 		);
 	}
