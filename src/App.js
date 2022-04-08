@@ -16,16 +16,15 @@ class App extends Component {
 			.then((json) => this.setState({ monsters: json }));
 	}
 
-	render() {
-		return (
-			<div className="App">
-				{this.state.monsters.map((monster) => (
-					<div key={monster.id}>
-						<h1>{monster.name}</h1>
-					</div>
-				))}
+	monsterList() {
+		return this.state.monsters.map((monster) => (
+			<div key={monster.id}>
+				<h1>{monster.name}</h1>
 			</div>
-		);
+		));
+	}
+	render() {
+		return <div className="App">{this.monsterList()}</div>;
 	}
 }
 export default App;
